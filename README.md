@@ -1,4 +1,4 @@
-# CraftBot
+# CraftBot V.4.0
 
 > A very intricate bot for the [Crafter's Corner](http://discord.gg/RMrcPBV) discord server.
 
