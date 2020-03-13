@@ -2,12 +2,20 @@
 	"ownerID": "DiscordUserIDHere",
 	"prefix": "!",
 	"botToken": "TokenGoesHere",
+	"allowInviteLinks": false,
+	"inviteLinkWarning": "Invite Link Warning Goes Here",
 	"ServerID": "ServerIDHere",
+	"GatewayRoleID": "RoleIDHere",
+	"GatewayChannelID": "GatewayChannelIDHere",
 	"MemberCountID": "MemberCountIDHere",
 	"AnnouncementsID" : "AnnouncementsIDHere",
-	"RulesChannelID": "GatewayChannelIDHere",
+	"newMemberAlert": false,
+	"memberLeavingAlert": false,
+	"MemberLeavingMessage": "Leaving Message Goes Here"
+	"botPlaying": false,
+	"botPlayingInterval": 10000,
 	"activities_list": [
-    "First Activity",
-    "Second Activity"
-    ]
+    		"First Activity",
+    		"Second Activity"
+    	]
 }
