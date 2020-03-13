@@ -62,7 +62,7 @@ client.on('message', async message => {
     // Check if Message is in #Rules & if keywords are hit.
     if (config.GatewayEnabled == true) {
         if (message.channel.id == config.GatewayChannelID) {
-            if (message.content.toLowerCase().includes("i accept")) {
+            if (message.content.toLowerCase().includes(config.GatewayCodeword)) {
                 message.member.removeRole(config.GatewayRoleID)
                     .then(console.log(`${message.author.tag} has agreed to the rules. @ ${new Date()}`))
                     .catch(console.error);
