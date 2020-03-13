@@ -7,5 +7,7 @@ Features are included but not limited to:
 <br>※ Chat Moderation tools - Removing X amount of messages or purging from a specified user
 <br>※ Profile System - Keep track of unique progress from each user on the server
 <br>※ Quote System - Remember funny/important messages from users and pull either random or specific quotes
+<br>※ Lurker System - Mark people who have been inactive for a certain amount of time and remove them from the server after a second specified amount of time has passed
+<br>※ Gallery System - Save images from users in a specific directory and pull them up when requested
 <br>
 <br> All of these features are intended for the [Crafter's Corner](http://discord.gg/RMrcPBV) discord server but can be customized to fit any other server you desire using the config file.
