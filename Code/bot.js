@@ -107,9 +107,11 @@ client.on('guildMemberAdd', member => {
     if (config.newMemberAlert == true) {
         client.channels.get(config.MemberCountID).setName(`Member Count: ${member.guild.memberCount}`)
             .then(console.log(`Updated Member Count on Server to ${member.guild.memberCount}`));
-        member.addRole(config.GatewayRoleID)
-            .then(console.log(`${member.user.tag}. Joined the server, yet to accept rules`))
-            .catch(console.error);
+        if (config.GatewaySystem == true) {
+            member.addRole(config.GatewayRoleID)
+                .then(console.log(`${member.user.tag}. Joined the server, yet to accept rules`))
+                .catch(console.error);
+        }
     }
 });
 
