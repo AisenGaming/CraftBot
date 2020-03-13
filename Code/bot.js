@@ -29,6 +29,11 @@ function command(help, message, args, ops, cmd) {
 // Ready Event -- Runs whenever the bot is launched.
 client.on('ready', () => {
     console.log('Launched!');
+    // TODO: Add config for this
+    setInterval(() => {
+        const index = Math.floor(Math.random() * (config.activities_list.length - 1) + 1);
+        client.user.setActivity(config.activities_list[index]);
+    }, 10000);
 });
 
 // Listener Events
