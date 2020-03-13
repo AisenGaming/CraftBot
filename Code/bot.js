@@ -138,3 +138,4 @@ client.on('message', async message => {
         message.channel.send('That command does not exist or the syntax was wrong.');
     }
 });
+
