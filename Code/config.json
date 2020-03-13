@@ -7,6 +7,7 @@
 	"ServerID": "ServerIDHere",
 	"GatewayRoleID": "RoleIDHere",
 	"GatewayChannelID": "GatewayChannelIDHere",
+	"GatewayCodeword": "i accept"
 	"MemberCountID": "MemberCountIDHere",
 	"AnnouncementsID" : "AnnouncementsIDHere",
 	"newMemberAlert": false,
