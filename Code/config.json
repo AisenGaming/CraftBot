@@ -11,7 +11,7 @@
 	"AnnouncementsID" : "AnnouncementsIDHere",
 	"newMemberAlert": false,
 	"memberLeavingAlert": false,
-	"MemberLeavingMessage": "Leaving Message Goes Here"
+	"MemberLeavingMessage": "Leaving Message Goes Here",
 	"botPlaying": false,
 	"botPlayingInterval": 10000,
 	"activities_list": [
