@@ -1,0 +1,13 @@
+{
+	"ownerID": "DiscordUserIDHere",
+	"prefix": "!",
+	"botToken": "TokenGoesHere",
+	"ServerID": "ServerIDHere",
+	"MemberCountID": "MemberCountIDHere",
+	"AnnouncementsID" : "AnnouncementsIDHere",
+	"RulesChannelID": "GatewayChannelIDHere",
+	"activities_list": [
+    "First Activity",
+    "Second Activity"
+    ]
+}
