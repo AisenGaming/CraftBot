@@ -13,8 +13,7 @@ function command(help, message, args, ops, cmd) {
             commandFile = require(`./commands/${args[0]}.js`);
             commandFile.help(client, message, args, ops);
             console.log(message.author.tag + " used help command for: " + args[0]);
-        }
-        else {
+        } else {
             commandFile = require(`./commands/${cmd}.js`);
             commandFile.run(client, message, args, ops);
             console.log(message.author.tag + " used command: " + cmd + " with subcommand: " + args.join(' '));
@@ -91,8 +90,7 @@ client.on('message', async message => {
         // Run the command
         if (cmd == "help") {
             command(true, message, args, ops, cmd);
-        }
-        else {
+        } else {
             command(false, message, args, ops, cmd);
         }
     } catch (e) {
