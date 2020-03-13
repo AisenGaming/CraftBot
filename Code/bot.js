@@ -90,3 +90,30 @@ client.on('message', async message => {
         message.channel.send('That command does not exist or the syntax was wrong.');
     }
 });
+
+// TODO: Add Config to these events
+
+// New Member Alert
+client.on('guildMemberAdd', member => {
+    // Update Voice Channels with Server Stats
+    client.channels.get(config.MemberCountID).setName(`Member Count: ${member.guild.memberCount}`)
+        .then(console.log(`Updated Member Count on Server to ${member.guild.memberCount}`));
+    member.addRole('467939264685146124')
+        .then(console.log(`${member.user.tag}. Joined the server, yet to accept rules`))
+        .catch(console.error);
+});
+
+// Leaving Member Message
+client.on('guildMemberRemove', member => {
+    // Update Voice Channels with Server Stats
+    client.channels.get(config.MemberCountID).setName(`Member Count: ${member.guild.memberCount}`)
+        .then(console.log(`Updated Member Count on Server to ${member.guild.memberCount}`));
+    const oldMemberEmbed = new Discord.RichEmbed()
+        .setTitle("User Left")
+        .setColor(0xe74c3c)
+        .setFooter("© Equinox Studios")
+        .setThumbnail(member.avatarURL)
+        .setTimestamp(new Date())
+        .addField(`${member.user.tag} Left the Server`, `Your Flesh and Soul is now forfeit to the Octopus!`);
+    client.channels.get(config.AnnouncementsID).send(oldMemberEmbed);
+});
