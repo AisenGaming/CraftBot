@@ -5,6 +5,7 @@
 	"allowInviteLinks": false,
 	"inviteLinkWarning": "Invite Link Warning Goes Here",
 	"ServerID": "ServerIDHere",
+	"GatewaySystem": true,
 	"GatewayRoleID": "RoleIDHere",
 	"GatewayChannelID": "GatewayChannelIDHere",
 	"GatewayCodeword": "i accept",
