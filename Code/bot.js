@@ -129,3 +129,6 @@ client.on('guildMemberRemove', member => {
         client.channels.get(config.AnnouncementsID).send(oldMemberEmbed);
     }
 });
+
+// Discord Login
+client.login(config.botToken); // Login Token. DO NOT LEAK
