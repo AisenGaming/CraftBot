@@ -1,5 +1,6 @@
 const Discord = require('discord.js');
 const config = require('./config.json');
+const db = require('./craftdb.js');
 var commandFile = null;
 const client = new Discord.Client(); // Use the Discord.js package to setup a client.
 
@@ -40,6 +41,43 @@ client.on('ready', () => {
 // This event will run whenever there's a new message that the Bot can read.
 client.on('message', async message => {
     
+    // Fetch User if they exist, otherwise add them & add to LastMessage since they sent a message
+    if (db.fetch(message.author.id)) var dbUser = db.fetch(message.author.id);
+    else db.initUser(message.author.id);
+    db.lastMessage(message.author.id);
+    
+    // Lurker System
+    if (config.UseLurkerSystem == true) {
+        if (message.member.roles.cache.find(role => role.id == config.LurkerRoleID)) {
+            await message.guild.member(message.author).removeRole(config.LurkerRoleID);
+            db.lastMessage(message.author.id);
+        }
+    }
+    
+    // EXP & Level System
+    // Check if they earned EXP in the last minute & if they didn't, add EXP
+    // Also check if it's a command
+    if (!message.content.startsWith(prefix)) {
+        if (Date.parse(dbUser.lastexp) + config.ExpTimer <= new Date().valueOf()) {
+            db.addXP(message.author.id, parseInt(Math.random() * 10) + 1);
+            db.lastExp(message.author.id);
+            // If they have enough EXP to level, add a level and reset EXP to 0
+            if (dbUser.xp >= dbUser.level * 100) {
+                await db.addLevel(message.author.id);
+                const embed = new Discord.RichEmbed()
+                    .setTitle("LEVEL UP")
+                    .setColor(0xe74c3c)
+                    .setFooter("© Equinox Studios")
+                    .setThumbnail(message.author.avatarURL)
+                    .setImage("https://cdn.discordapp.com/attachments/526296470006267924/526297494733193217/rainbowdivider.gif")
+                    .setTimestamp(new Date())
+                    .addField(`${message.author.tag}`, `Congratulations! You've reached Level ${dbUser.level}!`);
+                db.setXP(message.author.id, 0);
+                message.channel.send(embed);
+            }
+        }
+    }
+    
     // Variables
     let args = message.content.slice(prefix.length).trim().split(' ');
     let cmd = args.shift().toLowerCase();
@@ -65,19 +103,21 @@ client.on('message', async message => {
                 message.member.removeRole(config.GatewayRoleID)
                     .then(console.log(`${message.author.tag} has agreed to the rules. @ ${new Date()}`))
                     .catch(console.error);
-                const newMemberEmbed = new Discord.RichEmbed()
-                    .setTitle("User Joined")
-                    .setColor(0xe74c3c)
-                    .setFooter("© Equinox Studios")
-                    .setThumbnail(message.author.avatarURL || "http://pixelartmaker.com/art/ccb56d90dfd4f6e.png")
-                    .setTimestamp(new Date())
-                    .addField(`${message.author.tag} Joined the Server`, `${config.JoinMessage}`);
-                client.channels.get(config.AnnouncementsID).send(newMemberEmbed);
                 message.delete()
                     .then(console.log("Deleted I Accept message"));
+                if (config.newMemberAlert == true) {
+                    const newMemberEmbed = new Discord.RichEmbed()
+                        .setTitle("User Joined")
+                        .setColor(0xe74c3c)
+                        .setFooter("© Equinox Studios")
+                        .setThumbnail(message.author.avatarURL || "http://pixelartmaker.com/art/ccb56d90dfd4f6e.png")
+                        .setTimestamp(new Date())
+                        .addField(`${message.author.tag} Joined the Server`, `${config.JoinMessage}`);
+                    client.channels.get(config.AnnouncementsID).send(newMemberEmbed);
+                }
             }
             message.delete()
-                .then(console.log("Deleted unrelated message in Gateway Channel")
+                .then(console.log("Deleted unrelated message in Gateway Channel"));
         }
     }
     
@@ -102,23 +142,30 @@ client.on('message', async message => {
 // New Member Alert
 client.on('guildMemberAdd', member => {
     // Update Voice Channels with Server Stats if Config for it is enabled
-    if (config.newMemberAlert == true) {
-        client.channels.get(config.MemberCountID).setName(`Member Count: ${member.guild.memberCount}`)
-            .then(console.log(`Updated Member Count on Server to ${member.guild.memberCount}`));
-        if (config.GatewaySystem == true) {
-            member.addRole(config.GatewayRoleID)
-                .then(console.log(`${member.user.tag}. Joined the server, yet to accept rules`))
-                .catch(console.error);
-        }
+    client.channels.get(config.MemberCountID).setName(`Member Count: ${member.guild.memberCount}`)
+        .then(console.log(`Updated Member Count on Server to ${member.guild.memberCount}`));
+    if (config.GatewaySystem == true) {
+        member.addRole(config.GatewayRoleID)
+            .then(console.log(`${member.user.tag}. Joined the server, yet to accept rules`))
+            .catch(console.error);
+    } else {
+        const newMemberEmbed = new Discord.RichEmbed()
+            .setTitle("User Joined")
+            .setColor(0xe74c3c)
+            .setFooter("© Equinox Studios")
+            .setThumbnail(member.user.avatarURL || "http://pixelartmaker.com/art/ccb56d90dfd4f6e.png")
+            .setTimestamp(new Date())
+            .addField(`${member.user.tag} Joined the Server`, `${config.JoinMessage}`);
+        client.channels.get(config.AnnouncementsID).send(newMemberEmbed);
     }
 });
 
 // Leaving Member Message
 client.on('guildMemberRemove', member => {
     // Update Voice Channels with Server Stats
+    client.channels.get(config.MemberCountID).setName(`Member Count: ${member.guild.memberCount}`)
+        .then(console.log(`Updated Member Count on Server to ${member.guild.memberCount}`));
     if (config.memberLeavingAlert == true) {
-        client.channels.get(config.MemberCountID).setName(`Member Count: ${member.guild.memberCount}`)
-            .then(console.log(`Updated Member Count on Server to ${member.guild.memberCount}`));
         const oldMemberEmbed = new Discord.RichEmbed()
             .setTitle("User Left")
             .setColor(0xe74c3c)
